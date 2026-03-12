@@ -99,23 +99,6 @@ def my_orders():
                 
     return render_template('my_orders.html', orders=orders, phone=phone)
 
-@app.route('/admin/login', methods=['GET', 'POST'])
-def admin_login():
-    if request.method == 'POST':
-        # Get the values from your .env file
-        env_user = os.getenv('ADMIN_USER')
-        env_pass = os.getenv('ADMIN_PASS')
-
-        # Compare form data with environment variables
-        if request.form.get('user') == env_user and request.form.get('pass') == env_pass:
-            session['admin_logged_in'] = True
-            return redirect(url_for('admin_dashboard'))
-        else:
-            # Optional: Add an error message if login fails
-            return render_template('admin_login.html', error="Invalid Credentials")
-            
-    return render_template('admin_login.html')
-
 @app.route('/about')
 def about():
     # This renders the about.html template
@@ -142,6 +125,13 @@ def contact():
         
     return render_template('contact.html')
 
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        if request.form.get('user') == '1' and request.form.get('pass') == '1':
+            session['admin_logged_in'] = True
+            return redirect(url_for('admin_dashboard'))
+    return render_template('admin_login.html')
 
 @app.route('/admin/dashboard')
 def admin_dashboard():
@@ -243,7 +233,6 @@ def add_product():
     all_products = list(products_db.find().sort("created_at", -1))
     return render_template('add_product.html', products=all_products)
 
-# STOCK TOGGLE ROUTE
 # TOGGLE STOCK ROUTE
 @app.route('/admin/toggle_stock/<id>', methods=['POST'])
 def toggle_stock(id):
@@ -687,3 +676,4 @@ def update_cart(id, action):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
