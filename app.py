@@ -102,9 +102,18 @@ def my_orders():
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
-        if request.form.get('user') == '1' and request.form.get('pass') == '1':
+        # Get the values from your .env file
+        env_user = os.getenv('ADMIN_USER')
+        env_pass = os.getenv('ADMIN_PASS')
+
+        # Compare form data with environment variables
+        if request.form.get('user') == env_user and request.form.get('pass') == env_pass:
             session['admin_logged_in'] = True
             return redirect(url_for('admin_dashboard'))
+        else:
+            # Optional: Add an error message if login fails
+            return render_template('admin_login.html', error="Invalid Credentials")
+            
     return render_template('admin_login.html')
 
 @app.route('/about')
@@ -676,4 +685,5 @@ def update_cart(id, action):
     return redirect(url_for('view_cart'))
 
 if __name__ == '__main__':
+
     app.run(debug=True)
