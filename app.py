@@ -128,7 +128,7 @@ def contact():
 @app.route('/admin/login', methods=['GET', 'POST'])
 def admin_login():
     if request.method == 'POST':
-        if request.form.get('user') == '1' and request.form.get('pass') == '1':
+        if request.form.get('user') == 'admin' and request.form.get('pass') == '123':
             session['admin_logged_in'] = True
             return redirect(url_for('admin_dashboard'))
     return render_template('admin_login.html')
@@ -676,4 +676,5 @@ def update_cart(id, action):
 if __name__ == '__main__':
 
     app.run(debug=True)
+
 
